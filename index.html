@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Aid Final Exam 2025</title>
+    <style>
+        :root { --red: #d62828; --blue: #003049; --green: #2b9348; --bg: #f0f2f5; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        .header { position: sticky; top: 0; background: white; padding: 15px; border-bottom: 3px solid var(--red); z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        .score-board { display: flex; justify-content: space-around; font-weight: bold; font-size: 1.1rem; max-width: 600px; margin: auto; }
+        .correct-text { color: var(--green); }
+        .wrong-text { color: var(--red); }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .q-card { margin-bottom: 25px; padding: 20px; border-radius: 12px; border: 1px solid #ddd; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .q-text { font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; display: block; color: var(--blue); line-height: 1.4; }
+        .options { list-style: none; padding: 0; }
+        .options li { margin-bottom: 10px; padding: 12px; background: #f8f9fa; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; display: flex; align-items: center; }
+        .options li:hover { background: #eef2f7; }
+        .correct-ans { background: #d4edda !important; border-color: var(--green) !important; color: #155724; font-weight: bold; }
+        .wrong-ans { background: #f8d7da !important; border-color: var(--red) !important; color: #721c24; }
+        input[type="radio"] { margin-right: 12px; transform: scale(1.2); pointer-events: none; }
+        .disabled { pointer-events: none; opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2 style="margin:0 0 10px 0; color:var(--red);">First Aid Revision (94 Questions)</h2>
+    <div class="score-board">
+        <span>Progress: <span id="answered-count">0</span>/94</span>
+        <span class="correct-text">Correct: <span id="correct-count">0</span></span>
+        <span class="wrong-text">Wrong: <span id="wrong-count">0</span></span>
+    </div>
+</div>
+
+<div class="container" id="quiz-box"></div>
+
+<script>
+    const questions = [
+        {q: "Your check of the scene suggests that a victim has suffered an electrical shock. The first thing to do is....", a: ["Cover all burns with a dry loose dressing.", "Ask a bystander to help you move the victim.", "Place the victim on one side with the head down.", "Make sure the power is turned off"], c: 3},
+        {q: "A victim of a car accident has just vomited and now appears to be coughing up blood. He is breathing very quickly and his pulse is weak and fast. What is most likely wrong?", a: ["He is having a seizure.", "He has internal bleeding.", "He is having a heart attack.", "He is having a diabetic emergency."], c: 1},
+        {q: "You are caring for a victim with a burned hand. Put the hand in cool water if....", a: ["The burns are very deep", "There are burns with open blisters.", "The burns are minor with no open blisters.", "You should put the hand in cool water for all of the above."], c: 2},
+        {q: "A victim has lost a lot of blood through a deep cut in his leg. He is breathing fast and seems pail and restless. He is probably....", a: ["Having a stroke.", "Having a heart attack.", "in shock.", "Choking."], c: 2},
+        {q: "For which of the following burn victims should you immediately call your local emergency phone number?", a: ["A 40-year-old man who has burned his hand with hot coffee.", "A 68-year-old woman who has a blistered grease burn on her hands and arms.", "A 26-year-old woman who has a sunburn on her shoulders.", "All of the above."], c: 1},
+        {q: "A 15-year-old boy has just splashed a chemical on his face. After sending someone to call for an ambulance, you would....", a: ["Cover the burned area.", "Have the victim stay calm until ambulance arrives.", "Flush the burned area with large amounts of water until the ambulance arrives.", "Immediately drive the victim to the hospital."], c: 2},
+        {q: "Why should you cover burns with a clean or sterile dressing?", a: ["To prevent infection.", "To cool burned area.", "To keep the burned area warm.", "Both a and c"], c: 0},
+        {q: "You find a person at the bottom of the stairs. He appears to have fallen and seems badly hurt. After sending someone for help, you would....", a: ["Roll the victim onto his stomach keeping the head and back in a straight line.", "Roll the victim onto one side.", "Position victim onto one side.", "Attempt to keep the victim from moving."], c: 3},
+        {q: "A victim has a large piece of glass sticking out of her leg. You should....", a: ["Leave the glass in her leg and control the bleeding.", "Call your local emergency phone number.", "Remove the glass and then control the bleeding.", "Both a and b"], c: 3},
+        {q: "What should be your first concern at the scene where a person has been seriously burned?", a: ["Checking the scene for safety.", "Checking the victims breathing and pulse.", "Calling your local emergency phone number.", "Cooling the burned area."], c: 0},
+        {q: "A woman has fallen and burned her ankle. She says she heard something snap. She looks pale and is sweating. What should you do?", a: ["Have the victim walk on the injured ankle.", "Care for the injury as if it were serious.", "Apply heat and elevate the injury.", "Apply a dressing and loosely bandage."], c: 1},
+        {q: "Which of the following should be done for a person experiencing a heat related illness.", a: ["Keep the victim warm.", "Force the victim to drink fluids.", "Apply cool wet cloths.", "Place the victim in warm water."], c: 2},
+        {q: "Which should be part of your care for a severely bleeding open wound?", a: ["Allow the wound to bleed in order to minimize infection.", "Apply direct pressure and elevate the injured area. (If no broken bones)", "Use a tourniquet to stop all blood flow.", "Both b and c"], c: 1},
+        {q: "What should you do if you think a victim has serious internal bleeding?", a: ["Apply heat to the injured area.", "Call your local emergency phone number for help.", "Place the victim in a sitting position.", "Give fluids to replace blood loss."], c: 1},
+        {q: "Which is the first step when caring for bleeding wounds.", a: ["Apply direct pressure with a clean or sterile dressing.", "Apply pressure at the pressure point.", "Add bulky dressings to reinforce blood-soaked bandages.", "Elevate the wound."], c: 0},
+        {q: "How can you reduce the risk of disease transmission when caring for open, bleeding wounds?", a: ["Wash your hands immediately after giving care.", "Avoid direct contact with blood.", "Use protective barriers such as gloves or plastic wrap.", "All of the above."], c: 3},
+        {q: "Dressing and bandages are used to....", a: ["Reduce the victim's pain.", "Reduce internal bleeding.", "Help control bleeding and prevent infection.", "Make it easier to take the victim to the hospital"], c: 2},
+        {q: "When giving care for external bleeding, what should you do first?", a: ["Elevate the injury.", "Apply direct pressure.", "Apply a loose dressing.", "Apply a tourniquet."], c: 1},
+        {q: "Bandages are used for....", a: ["Applying directly to a wound to soak up blood.", "To hold dressings in place, apply pressure and control bleeding.", "Ease pain.", "Small cuts only"], c: 1},
+        {q: "Dressings and pads....", a: ["Should be removed when blood soaked. New ones should be applied.", "Are used to help control bleeding and keep germs out.", "Are not included in a first aid kit.", "Should be applied to a sucking chest wound"], c: 1},
+        {q: "Which symptoms would indicate internal bleeding?", a: ["Rapid weak pulse, Excessive thirst.", "Skin that feels cool or moist, or looks pale or bluish.", "Tender, swollen, bruised, or hard areas of his body, such as the abdomen.", "All of the above."], c: 3},
+        {q: "Which is not a symptom of shock....", a: ["Strong thirst, nausea, or vomiting.", "abdominal colic.", "Restless or irritability.", "Rapid breathing or rapid pulse."], c: 1},
+        {q: "A first-degree burn....", a: ["Involves only the top layer of skin.", "Is red and blistered.", "Destroys all layers of skin.", "Is the most serious of burns."], c: 0},
+        {q: "When caring for someone who has suffered an electrical burn, you would not....", a: ["Check breathing and pulse.", "Check for possible fractures.", "Cool the burned area.", "Treat for shock."], c: 2},
+        {q: "When caring for a student who is suffering from heat cramps.", a: ["Apply cold packs", "Give cool water or sports drink.", "Have student keep walking slowly to work the cramp out.", "Massage the muscle vigorously to increase circulation."], c: 1},
+        {q: "What symptoms are associated with heat exhaustion....", a: ["Cool, moist, pale, or flushed skin.", "Rapid weak pulse.", "Rapid, shallow breathing.", "All of the above."], c: 3},
+        {q: "Heat stroke....", a: ["Causes very high body temperature.", "Hot red or dry skin.", "Rapid weak pulse, shallow breathing.", "All of the above."], c: 3},
+        {q: "What would you do for a victim who has internal bleeding?", a: ["Keep the victim quiet and lying down.", "Bend knees to make them comfortable.", "Both a and b", "None of the above."], c: 2},
+        {q: "Internal bleeding can be caused by:", a: ["Injury", "Illness", "Medication", "All of the above."], c: 3},
+        {q: "What do you do for a chemical burn?", a: ["Flush with water, dry, and cover.", "Flush with large amounts of water and cover.", "Flush with large amounts of warm water until help arrives.", "Flush with large amounts of cool water until help arrives."], c: 3},
+        {q: "What is more serious?", a: ["Heat Stroke", "Heat Exhaustion", "Heat Cramps", "Heat Rash"], c: 0},
+        {q: "Shock is a condition where:", a: ["The respiratory system fails to deliver air to the lungs.", "The cardiovascular system fails to deliver blood to the heart.", "The circulatory system fails to deliver blood to all parts of the body.", "All of the above."], c: 2},
+        {q: "In general, a splint should be....", a: ["Loose, so that the victim can still move the injured limb.", "not so tight that it slows circulation.", "Tied with cravats over the injured area.", "None of the above."], c: 1},
+        {q: "Splint an injury to a muscle, bone, or joint only when....", a: ["You have to move or transport the victim.", "You can do so without hurting the victim.", "You have splinting materials available.", "Both a and b"], c: 3},
+        {q: "A wound where there is damage to the soft tissue and blood vessels under the skin is called.....", a: ["A scrape", "A cut", "A bruise", "An avulsion"], c: 2},
+        {q: "When caring for a victim with a bloody nose you would not......", a: ["Apply an ice pack to the bridge of the nose.", "Apply pressure to upper lip just beneath nose.", "Have the victim sit with head tilted slightly backward while pinching the nostrils together.", "Have the victim sit with head tilted slightly forward while pinching the nostrils together."], c: 2},
+        {q: "Wounds that would require stitches are....", a: ["Over an inch long.", "Operation wound.", "Bleeding from an artery or uncontrolled bleeding.", "All of the above."], c: 3},
+        {q: "Hypothermia....", a: ["Is not life threatening.", "Victims must be heated up as fast as possible.", "Is caused by exposure to temperatures below freezing", "Can be caused by swimming in waters below 70 degrees"], c: 3},
+        {q: "Soft tissue wounds should be cared for by:", a: ["Heat and elastic bandages.", "Ice and elevation.", "Apply direct pressure on the area to cut down on bleeding under skin.", "Both b and c"], c: 3},
+        {q: "A boy is shot with an arrow through the chest and out the back, what would be the best course of action?", a: ["Remove the arrow and apply sterile gauze to the wound.", "Do not remove the arrow, place several dressings around the arrow to keep it from moving, bandage the dressings in place around the arrow.", "Do not remove the arrow; break off the part out the back, bandage with dressing around the arrow to hold it in place.", "Remove the arrow, wash the area, and bandage with sterile gauze."], c: 1},
+        {q: "A boy has a sliver in his eye, you should….", a: ["attempt to remove the splinter with tweezers.", "flush the eye with cool water or milk.", "Leave the sliver in, Call for help.", "Wrap sterile gauze around the head covering both eyes."], c: 3},
+        {q: "A boy with frostbite on his feet, what should you do?", a: ["Rub his feet vigorously until feeling and color return.", "Apply hot moist towels to feet and message gently.", "Soak feet in warm water, bandage with dry sterile dressing.", "Soak feet in warm water not more than 90 degrees; rub feet gently until feeling and color return, then wrap with sterile dressing."], c: 2},
+        {q: "What do you do for a victim who has a bleeding injury to the mouth and you are sure that there is no head, neck, or spine injury.", a: ["Keep victim seated with head tilted slightly forward.", "Keep victim seated with head tilted slightly backward.", "Have the victim lie down on their side.", "Either a or c"], c: 3},
+        {q: "What is an open fracture?", a: ["A fracture in which the bone ends can move around.", "A fracture in which the bone is exposed as the skin is broken.", "A fracture which causes complications such as a punctured lung.", "A fracture in which the bone has bent and split."], c: 1},
+        {q: "Which medical condition will develop from severe blood loss?", a: ["Shock.", "Hypoglycemia.", "Anaphylaxis.", "Hypothermia"], c: 0},
+        {q: "What names are given to the three different depths of burns?", a: ["Small, medium and large.", "First, second and third degree.", "Minor, medium and severe.", "Superficial, partial thickness, full thickness."], c: 1},
+        {q: "The purpose of placing an injured arm in a sling is to allow the arm to.", a: ["heal", "strengthen", "rest", "swell"], c: 2},
+        {q: "Which of the following is NOT a benefit of placing ice on a fracture?", a: ["decreased healing", "reduced pain", "decreased swelling", "reduced bleeding"], c: 0},
+        {q: "A person, who is unconscious, not breathing, has a no pulse, needs….", a: ["CPR", "abdominal thrust maneuver.", "Rescue breathing.", "Back blows and chest thrusts."], c: 0},
+        {q: "A victim of a car accident has just vomited and now appears to be coughing up -blood. He is breathing very quickly, and his pulse is weak and fast. What is most likely wrong?", a: ["He is having a seizure.", "He has internal bleeding.", "He is having a heart attack.", "He is having a diabetic emergency."], c: 1},
+        {q: "A victim has lost a lot of blood through a deep cut in his leg. He is breathing fast and seems pail and restless. He is probably….", a: ["Having a stroke.", "Having a heart attack.", "In shock.", "Choking."], c: 2},
+        {q: "Which is not a symptom of heart attack.", a: ["Chest pain.", "Red, hot, or dry skin.", "Pale or bluish in color.", "Profuse sweating"], c: 1},
+        {q: "When performing adult CPR, you give….", a: ["2 slow breaths and 30 chest compressions.", "1 slow breath and 10 chest compressions.", "5 slow breaths and 10 chest compressions.", "3 slow breaths and 15 chest compressions."], c: 0},
+        {q: "When performing CPR on a child you give….", a: ["4 slow breaths and 20 chest compressions.", "1 slow breath and 5 chest compressions.", "2 slow breaths and 30 chest compressions.", "2 slow breaths and 15 chest compressions"], c: 2},
+        {q: "When caring for a choking infant, what position is the infant held in?", a: ["Upside down by the ankles and shoulders.", "Face up on a flat surface.", "Face down on your forearm with head lower than the body.", "Face down on your knee, with head lower than the body."], c: 2},
+        {q: "You have a person who is conscious, and refuses help, now become unconscious state, what should you do?", a: ["Permission is “Implied” if the victim is unconscious.", "Start CPR", "Call 123 and wait until professional help arrives.", "Head tilt chain left"], c: 0},
+        {q: "A man is having a heart attack, he has medication with him, what should You do?", a: ["Give the medicine to him placing it under the tongue, Call 123.", "Assist him with the medicine, call 123, and reassure him until help arrives.", "Call 123, place medicine in mouth and begin CPR.", "Have the victim lay down, Call 123."], c: 1},
+        {q: "A girl is not breathing but has a pulse, what would be the best course of action?", a: ["Call 123 and begin CPR immediately.", "Call 123 and begin rescue breathing.", "Call 123, check for blocked airway, begin CPR.", "Call 123, and wait for professional medical help to arrive"], c: 1},
+        {q: "Where would you check the pulse on a 12-year-old boy?", a: ["On the inside of the arm between the elbow and shoulder.", "At the side of the neck", "On the inside of the wrist.", "at the foot dorsalis pedis artery"], c: 1},
+        {q: "The goal of CPR is to oxygenated blood to vital organs like the --- ------ and ----- .", a: ["Spleen, pancreas", "Stomach, kidney", "Heart, brain", "Foot and hand"], c: 2},
+        {q: "When performing CPR on an adult, how deep should the chest compressions be?", a: ["1-2 cm", "3-4 cm", "2-3cm", "5-6 cm"], c: 3},
+        {q: "A first aid responder should move a victim when….", a: ["We should move any victim at any time.", "The victim is in a dangerous position.", "Never move a victim", "Both a & b"], c: 1},
+        {q: "An eight-year-old child is unconscious, and the airway is blocked. You should:", a: ["Give abdominal thrusts", "Begin CPR", "Begin blind search in victim mouth.", "All of the above"], c: 1},
+        {q: "Exhaled air contains about ------- percent oxygen.", a: ["13%", "16%", "21%", "24 %"], c: 1},
+        {q: "Which symptoms would indicate internal bleeding?", a: ["Rapid weak pulse, Excessive thirst.", "Skin that feels cool or moist or looks pale or bluish.", "Tender, swollen, bruised, or hard areas of his body, such as the abdomen.", "All of the above."], c: 3},
+        {q: "A stroke consists of which following signs.", a: ["Chest pain", "Sweaty", "Weakness", "Nausea"], c: 2},
+        {q: "Which of the following can cause a stroke?", a: ["A blood clot in an artery in the brain.", "A blood clot in an artery in the heart.", "A blood clot in an artery in the leg.", "A blood clot in an artery in the lungs."], c: 0},
+        {q: "The recommended rate of compression for an adult is:", a: ["80-100 per minute.", "100-120 per minute.", "120-140 per minute.", "140-160 per minute."], c: 1},
+        {q: "What would you do for a victim who has internal bleeding?", a: ["Keep the victim quiet and lying down.", "Bend knees to make them comfortable.", "Both a and b", "None of the above."], c: 2},
+        {q: "You are a lone first aider and have an unconscious non-breathing adult, what should you do first?", a: ["Start CPR with 30 chest compressions.", "Give five initial rescue breaths.", "Call 123 requesting AED (defibrillator) and ambulance.", "Give two initial rescue breaths"], c: 2},
+        {q: "The first leading cause of death worldwide is:", a: ["Heat Stroke.", "Heat Exhaustion.", "Acute ischemic stroke.", "Acute coronary syndrome (heart attack)."], c: 3},
+        {q: "Symptoms of a Stroke can be:", a: ["Poisoning, burns, and/or blood loss.", "Droopy face, arm, and/or speech.", "Lack of oxygen, wheezing, and/or sweating.", "Shoulder pain."], c: 1},
+        {q: "You should ask the patient if He/ She is okay before performing CPR.", a: ["True", "False"], c: 0},
+        {q: "How long should you check for breathing with unconscious victim", a: ["Do not check for breathing, continue chest compressions.", "Not more than 2 seconds.", "Not more than 5 seconds.", "Not more than 10 seconds."], c: 3},
+        {q: "When you try to give an unresponsive adult a rescue breath and the chest does not appear to rise, what would you do next?", a: ["Perform abdominal thrusts.", "Begin CPR.", "Go call 123.", "Repeat the head tilt/chin lift maneuver and attempt the breath again."], c: 3},
+        {q: "While dining out in a restaurant you hear a mother cry out that her six-month-old child, who was given some toys by an older child, is gagging. His mouth area is turning blue and he’s unable to take a breath or cry out. What would you do first in this scenario?", a: ["Begin CPR", "Attempt rescue breaths then compressions", "Deliver back blows and chest thrusts", "Blind finger Sweep."], c: 2},
+        {q: "What would your next step be after you are performing single-person CPR and the AED (Automatic External Defibrillator) advises a shock?", a: ["call help", "resume CPR", "check for pulse", "resume ventilation"], c: 1},
+        {q: "Placing an unconscious, breathing victim in the recovery position is important to maintain an open airway and to minimize the potential of blood and vomit to cause obstruction.", a: ["True", "False"], c: 0},
+        {q: "What is a faint?", a: ["A response to fear.", "A cardiac arrest patient.", "A brief loss of consciousness.", "A sign of flu."], c: 2},
+        {q: "The complete medical terminology for CPR is…", a: ["cardiac pulse restart", "cardiopulmonary resuscitation", "complex pulmonary radiation", "cardiac pulmonary rebound"], c: 1},
+        {q: "what is the medical term for a short-lived loss brain function after head trauma?", a: ["amnesia", "concussion", "atrophy", "vertigo"], c: 1},
+        {q: "While performing CPR on an infant, another rescuer appears on the scene, what do you do next?", a: ["Immediately transport the patient", "Wait until exhausted then switch", "Second rescuer help with CPR", "Have second rescuer begin ventilation ratio 30:2"], c: 2},
+        {q: "You’re having lunch with a friend and he begins to choke on some food. He can’t speak, breathe or cough it up. How can you help?", a: ["Put your fingers down his throat to dislodge the obstruction", "Do abdominal thrust", "Start CPR", "Continuous back slaps"], c: 1},
+        {q: "You’re having lunch with a friend and he begins to choke on some food. He can speak, breathe and cough. How can you help?", a: ["Put your fingers down his throat to dislodge the obstruction", "Do abdominal thrust", "Encourage him to cough and stay with him", "Continuous back slaps"], c: 2},
+        {q: "Which has the patient priorities in the right order", a: ["Bone trauma, Burn, Breathing", "Breathing, Bleeding, Burn, Bone trauma", "Bleeding, Breathing, Bone, Burn", "Burn, Breathing, Bone, Bleeding"], c: 1},
+        {q: "What is the first action when examining patient", a: ["Breathing", "Pulse", "Speak to the victim and shake shoulder", "External bleeding"], c: 2},
+        {q: "How to recognize a patient with a fractured skull?", a: ["He or she has a blurred vision", "He or she has headache", "Watery blood or clear fluid coming out of the ear or nose", "He is coughing"], c: 2},
+        {q: "When you start CPR and you will check pulse", a: ["Not more than 5 seconds", "Not more than 3 seconds", "Not more than 10 seconds", "Not more than 15 seconds"], c: 2},
+        {q: "The Egyptian ambulance service telephone number is", a: ["112", "123", "111", "122"], c: 1},
+        {q: "What would you give to someone who seems to have a heart attack?", a: ["Massage", "Aspirin", "Water", "CPR"], c: 1},
+        {q: "Which of the following is not type of head injuries", a: ["Concussion", "Brain contusion", "Skull fracture", "Vomiting blood"], c: 3},
+        {q: "Brief or partial loss of conscious level and loss of memory of events at the time of, or immediately preceding the injury is symptoms of", a: ["Concussion", "Skull fracture", "Brain contusion", "Brain tumor"], c: 0},
+        {q: "Why should you cover burns with a clean or sterile dressing?", a: ["To prevent infection.", "To cool burned area.", "To keep the burned area warm.", "Both a and c"], c: 0},
+        {q: "Second-degree burn….", a: ["Involves only the top layer of skin.", "Is red and blistered.", "Destroys all layers of skin.", "Is the most serious of burns"], c: 1}
+    ];
+
+    let correctCount = 0;
+    let wrongCount = 0;
+    let answered = 0;
+
+    function init() {
+        const box = document.getElementById('quiz-box');
+        questions.forEach((item, i) => {
+            let qDiv = document.createElement('div');
+            qDiv.className = 'q-card';
+            qDiv.innerHTML = `<span class="q-text">${i+1}. ${item.q}</span><ul class="options" id="q${i}"></ul>`;
+            const optList = qDiv.querySelector('ul');
+            
+            item.a.forEach((opt, idx) => {
+                let li = document.createElement('li');
+                li.innerHTML = `<input type="radio" name="rad${i}"> ${opt}`;
+                li.onclick = () => check(i, idx, item.c, li);
+                optList.appendChild(li);
+            });
+            box.appendChild(qDiv);
+        });
+    }
+
+    function check(qIdx, selectedIdx, correctIdx, element) {
+        const parent = document.getElementById(`q${qIdx}`);
+        if (parent.classList.contains('disabled')) return;
+
+        parent.classList.add('disabled');
+        answered++;
+        document.getElementById('answered-count').innerText = answered;
+
+        if (selectedIdx === correctIdx) {
+            correctCount++;
+            element.classList.add('correct-ans');
+            document.getElementById('correct-count').innerText = correctCount;
+        } else {
+            wrongCount++;
+            element.classList.add('wrong-ans');
+            document.getElementById('wrong-count').innerText = wrongCount;
+            parent.children[correctIdx].classList.add('correct-ans');
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>
+
